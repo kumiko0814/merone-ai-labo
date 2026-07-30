@@ -1,0 +1,408 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light">
+<title>Merone AI活用らぼ♡ お申込み</title>
+<style>
+  :root{
+    color-scheme:light;
+    --ground:#FAFBFD;--panel:#FFFFFF;--panel-2:#F3F5FA;--ink:#1E2A44;--ink-soft:#4A5670;--muted:#6E7890;
+    --line:#E3E8F1;--line-strong:#D2D9E8;--accent:#4A7BB5;--accent-soft:#6E9FD4;--pink:#C97E92;--pink-soft:#E8C4CB;--navy:#2E4372;
+    --shadow:0 1px 2px rgba(30,42,68,.05),0 8px 24px rgba(30,42,68,.06);
+    --shadow-lg:0 2px 6px rgba(30,42,68,.08),0 18px 48px rgba(30,42,68,.10);
+    --font:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+    --mincho:"Hiragino Mincho ProN","Yu Mincho","YuMincho",Georgia,serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--font);line-height:1.75;-webkit-font-smoothing:antialiased;font-feature-settings:"palt" 1}
+  .wrap{max-width:600px;margin:0 auto;padding:0 18px}
+
+  .hero{background:linear-gradient(160deg,#fdf1f4,#eef4fb);border-bottom:1px solid var(--line);padding:34px 0 26px;text-align:center}
+  .hero .eyebrow{font-size:.72rem;letter-spacing:.24em;color:var(--accent);font-weight:800;margin:0 0 12px}
+  h1{font-size:clamp(1.5rem,5.5vw,2.05rem);font-weight:800;margin:0 0 10px;line-height:1.4}
+  .price{font-family:var(--mincho);font-size:clamp(2rem,8vw,2.8rem);color:var(--navy);font-variant-numeric:tabular-nums;margin:8px 0 2px}
+  .price small{font-size:.42em;color:var(--muted);margin-left:4px}
+  .hero p{color:var(--ink-soft);font-size:.95rem;margin:6px 0 0}
+
+  section{padding:24px 0}
+  .step-label{display:flex;align-items:center;gap:10px;font-size:1.05rem;font-weight:800;margin:0 0 14px}
+  .step-no{flex:none;width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:800}
+
+  .pay-tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 14px}
+  .pay-tab{border:2px solid var(--line);background:var(--panel);border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;font-weight:800;transition:all .15s;font-size:.98rem;color:var(--ink-soft)}
+  .pay-tab .em{display:block;font-size:1.4rem;margin-bottom:4px}
+  .pay-tab.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,var(--panel));color:var(--ink)}
+  .pay-body{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow);display:none}
+  .pay-body.on{display:block}
+  .pay-body h3{margin:0 0 8px;font-size:1rem;font-weight:800}
+  .pay-body p{margin:0 0 12px;font-size:.9rem;color:var(--ink-soft)}
+  .paybtn{display:block;text-align:center;background:#003087;color:#fff;font-weight:800;font-size:1.02rem;padding:15px;border-radius:12px;text-decoration:none;box-shadow:0 8px 22px rgba(0,48,135,.25)}
+  .paybtn.disabled{background:var(--line-strong);color:var(--muted);pointer-events:none}
+  .bank{background:var(--panel-2);border:1px dashed var(--line-strong);border-radius:12px;padding:14px;font-size:.94rem}
+  .bank .row{display:flex;justify-content:space-between;gap:10px;padding:4px 0;border-bottom:1px solid var(--line)}
+  .bank .row:last-child{border-bottom:none}
+  .bank .row b{font-variant-numeric:tabular-nums;text-align:right}
+
+  label.fld{display:block;font-size:.9rem;font-weight:700;margin:14px 0 6px}
+  label.fld .req{display:inline-block;font-size:.66rem;font-weight:800;color:#fff;background:var(--pink);padding:1px 7px;border-radius:999px;margin-left:6px;vertical-align:middle}
+  input[type=text]{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;font-family:var(--font);font-size:1rem;color:var(--ink);background:var(--panel)}
+  input[type=text]:focus{outline:none;border-color:var(--accent)}
+  input.invalid{border-color:#D0596A;background:color-mix(in srgb,#D0596A 6%,var(--panel))}
+
+  .drop{border:2px dashed var(--line-strong);border-radius:14px;background:var(--panel);padding:22px 16px;text-align:center;cursor:pointer;transition:border-color .15s}
+  .drop:hover{border-color:var(--accent)}
+  .drop .di{font-size:2rem}
+  .drop .dt{font-weight:800;margin:6px 0 2px}
+  .drop .ds{font-size:.82rem;color:var(--muted)}
+  .thumb{margin-top:12px;position:relative;display:none}
+  .thumb img{width:100%;max-height:280px;object-fit:contain;border-radius:12px;border:1px solid var(--line);background:var(--panel-2)}
+  .thumb .rm{position:absolute;top:8px;right:8px;background:rgba(20,25,40,.7);color:#fff;border:none;width:34px;height:34px;border-radius:50%;font-size:1.1rem;cursor:pointer}
+  .secnote{font-size:.82rem;color:var(--accent);font-weight:700;margin:10px 0 0;background:color-mix(in srgb,var(--accent) 8%,var(--panel));border-radius:10px;padding:9px 12px;line-height:1.6}
+
+  .submit{width:100%;border:none;border-radius:999px;background:var(--navy);color:#fff;font-family:var(--font);font-size:1.08rem;font-weight:800;padding:17px;margin-top:20px;cursor:pointer;box-shadow:0 10px 26px rgba(46,67,114,.28);transition:transform .15s}
+  .submit:hover{transform:translateY(-1px)}
+  .submit[disabled]{opacity:.55;cursor:not-allowed;transform:none}
+  .req-err{display:none;color:#C33D53;font-size:.84rem;font-weight:700;margin:8px 0 0}
+  .req-err.show{display:block}
+
+  .trouble{margin:22px 0 0;text-align:center;font-size:.9rem}
+  .trouble a{color:var(--accent);font-weight:700}
+
+  footer{border-top:1px solid var(--line);margin-top:28px;padding:22px 0 60px;text-align:center;color:var(--muted);font-size:.8rem}
+  footer a{color:var(--muted);text-decoration:underline}
+
+  .ov{position:fixed;inset:0;z-index:100;background:rgba(20,25,40,.55);backdrop-filter:blur(3px);display:none;align-items:flex-start;justify-content:center;padding:20px;overflow:auto}
+  .ov.show{display:flex}
+  .ovcard{background:var(--panel);border-radius:20px;max-width:520px;width:100%;padding:28px 22px;box-shadow:var(--shadow-lg);text-align:center;margin:auto}
+  .ovcard .ok{font-size:2.6rem}
+  .ovcard h2{font-size:1.35rem;font-weight:800;margin:8px 0 6px}
+  .ovcard p{color:var(--ink-soft);font-size:.95rem;margin:0 0 6px}
+  .ocbtn{display:block;background:#06C755;color:#fff;font-weight:800;font-size:1.08rem;padding:16px;border-radius:14px;text-decoration:none;margin:18px 0 10px;box-shadow:0 8px 22px rgba(6,199,85,.28)}
+  .subbtn{display:inline-block;margin:4px;padding:11px 18px;border-radius:999px;border:1.5px solid var(--line-strong);background:var(--panel);color:var(--ink-soft);font-weight:700;font-size:.9rem;text-decoration:none;cursor:pointer}
+  .rno{font-size:.82rem;color:var(--muted);margin-top:10px}
+  .spin{width:44px;height:44px;border:4px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:sp 1s linear infinite;margin:6px auto 0}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .retrybtn{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;font-weight:800;padding:13px 26px;border-radius:999px;border:none;cursor:pointer;font-size:1rem}
+
+  .rcpt{display:none;text-align:left;background:#fff;color:#1E2A44;border:1px solid var(--line);border-radius:12px;padding:22px;max-width:480px;margin:14px auto 0;font-family:var(--mincho)}
+  .rcpt h3{text-align:center;font-size:1.3rem;letter-spacing:.3em;margin:0 0 16px;border-bottom:2px solid var(--navy);padding-bottom:10px}
+  .rcpt .r-to{font-size:1.05rem;border-bottom:1px solid var(--ink);padding-bottom:4px;margin-bottom:16px}
+  .rcpt .r-amt{font-size:1.8rem;text-align:center;font-variant-numeric:tabular-nums;background:var(--panel-2);border-radius:8px;padding:10px;margin-bottom:14px}
+  .rcpt .r-line{font-size:.9rem;margin:5px 0;font-family:var(--font)}
+  .rcpt .r-iss{margin-top:18px;text-align:right;font-size:.86rem;font-family:var(--font);line-height:1.7}
+  @media print{body *{visibility:hidden}#rcpt,#rcpt *{visibility:visible}#rcpt{position:absolute;left:0;top:0;display:block!important;border:none}}
+
+  .cfgwarn{background:#FFF4E5;border:1px solid #F0C36D;color:#8a5a12;font-size:.8rem;border-radius:10px;padding:8px 12px;margin:10px 0;text-align:center}
+
+  /* 🍺 バグ報告 */
+  .bugbtn{position:fixed;left:14px;bottom:14px;z-index:90;width:52px;height:52px;border-radius:50%;border:none;background:#fff;
+    box-shadow:0 6px 18px rgba(30,42,68,.22);font-size:1.5rem;cursor:pointer;line-height:1;padding:0}
+  .bugbtn:active{transform:scale(.94)}
+  .bugov{position:fixed;inset:0;z-index:120;background:rgba(20,25,40,.5);display:none;align-items:center;justify-content:center;padding:20px}
+  .bugov.show{display:flex}
+  .bugcard{background:var(--panel);border-radius:18px;max-width:440px;width:100%;padding:22px;box-shadow:var(--shadow-lg)}
+  .bugcard h3{margin:0 0 4px;font-size:1.1rem;font-weight:800}
+  .bugcard p{margin:0 0 12px;font-size:.85rem;color:var(--muted)}
+  .bugcard textarea{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:12px;font-family:var(--font);font-size:.95rem;resize:vertical;min-height:90px}
+  .bugrow{display:flex;gap:10px;margin-top:14px}
+  .bugrow button{flex:1;border-radius:999px;padding:13px;font-weight:800;font-size:.95rem;cursor:pointer;border:1.5px solid var(--line);background:var(--panel);color:var(--ink-soft)}
+  .bugrow button.send{background:#F6B31E;border-color:#F6B31E;color:#4a2f00}
+
+  .toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%) translateY(20px);opacity:0;background:var(--ink);color:#fff;padding:11px 20px;border-radius:999px;font-size:.86rem;font-weight:700;z-index:200;transition:all .3s;pointer-events:none}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+
+</head>
+<body>
+<div class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Merone ／ 特別ご案内</p>
+    <h1>Merone AI活用らぼ♡<br>お申込み</h1>
+    <div class="price">¥45,900<small>税込</small></div>
+    <p>お支払い後、完了画面のスクリーンショットを送っていただくと、<br>確認のうえコミュニティにご案内します☺</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <section>
+    <div class="step-label"><span class="step-no">1</span>お支払い方法を選ぶ</div>
+    <div class="pay-tabs">
+      <div class="pay-tab on" data-pay="paypal"><span class="em">💳</span>PayPal（カード）</div>
+      <div class="pay-tab" data-pay="bank"><span class="em">🏦</span>銀行振込</div>
+    </div>
+    <div class="pay-body on" id="pay-paypal">
+      <h3>PayPal（クレジットカード）でお支払い</h3>
+      <p>下のボタンからお支払いください（¥45,900）。<b>お支払い完了の画面をスクリーンショット</b>してから、STEP2でアップしてね。</p>
+      <div class="cfgwarn" id="ppwarn" style="display:none">※ PayPal支払いリンク 設定待ち</div>
+      <a class="paybtn" id="ppbtn" href="#" target="_blank" rel="noopener">PayPalでお支払いする</a>
+    </div>
+    <div class="pay-body" id="pay-bank">
+      <h3>銀行振込でお支払い</h3>
+      <p>下記口座に <b>¥45,900</b> をお振込みください。<b>振込明細のスクリーンショット</b>を、STEP2でアップしてね。</p>
+      <div class="bank">
+        <div class="row"><span>銀行</span><b>GMOあおぞらネット銀行</b></div>
+        <div class="row"><span>支店</span><b>法人営業部</b></div>
+        <div class="row"><span>口座番号</span><b>1262392</b></div>
+        <div class="row"><span>名義</span><b>カ)メローネ</b></div>
+        <div class="row"><span>金額</span><b>¥45,900</b></div>
+      </div>
+      <p style="margin-top:10px;font-size:.82rem;color:var(--muted)">※ 振込手数料はご負担ください。</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="step-label"><span class="step-no">2</span>完了スクショと、お名前を送る</div>
+    <label class="fld">お支払いの完了スクリーンショット <span class="req">必須</span></label>
+    <div class="drop" id="drop"><div class="di">📷</div><div class="dt">タップで画像を選ぶ</div><div class="ds">PayPal完了画面／振込明細のスクショ</div></div>
+    <input type="file" id="file" accept="image/*" style="display:none">
+    <div class="thumb" id="thumb"><img id="thumbimg" alt="プレビュー"><button class="rm" id="rm" aria-label="削除">×</button></div>
+    <div class="secnote">🔒 送信されたスクショは、<b>¥45,900の完了画面かどうかを自動でチェック</b>します。金額が確認できた方だけ、その場でコミュニティにご案内します。</div>
+
+    <label class="fld">お名前 <span class="req">必須</span></label>
+    <input type="text" id="name" placeholder="山田 花子" autocomplete="name">
+    <label class="fld">LINE名</label>
+    <input type="text" id="lineName" placeholder="LINEの表示名">
+    <label class="fld">領収書の宛名 <span class="req">必須</span></label>
+    <input type="text" id="uate" placeholder="山田 花子 様／◯◯株式会社 様">
+    <p style="font-size:.8rem;color:var(--muted);margin:6px 0 0">※ 確認後、その場で領収書を発行します（¥45,900・印紙不要）。</p>
+
+    <p class="req-err" id="err">未入力の項目があります（スクショ・お名前・宛名は必須）</p>
+    <button class="submit" id="submit">送信して確認する →</button>
+
+    <div class="trouble">💳 決済でエラーが出た方は、<b>AI勉強会のLINE</b>に<br>「どんなエラーが出たか」の詳細をお送りください。<br>確認して個別に対応いたします。<br><a id="troubleLink" href="#" target="_blank" rel="noopener" style="display:inline-block;margin-top:8px">AI勉強会のLINEを開く →</a></div>
+  </section>
+
+  <footer>
+    <p>株式会社Merone｜Merone AI活用らぼ♡</p>
+    <p><a id="tokushoLink" href="#">特定商取引法に基づく表記</a></p>
+  </footer>
+</div>
+
+<button class="bugbtn" id="bugbtn" title="不具合を報告">🍺</button>
+
+<!-- 結果オーバーレイ -->
+<div class="ov" id="ov">
+  <div class="ovcard">
+    <div id="checking">
+      <div class="spin"></div>
+      <h2 style="font-size:1.1rem;margin-top:14px">お支払い内容を確認しています…</h2>
+      <p id="checkmsg">スクショの金額を自動チェック中（10〜30秒ほど）。このまま少しお待ちください。</p>
+    </div>
+    <div id="done" style="display:none">
+      <div class="ok">🎉</div>
+      <h2>確認できました！ありがとうございます</h2>
+      <p>下のボタンから、Merone生限定コミュニティにご参加ください☺</p>
+      <a class="ocbtn" id="ocbtn" href="#">「Merone生限定🫶🏻 AI活用らぼ」に参加する</a>
+      <div><a class="subbtn" id="showRcpt">🧾 領収書を表示・保存</a></div>
+      <p class="rno" id="rno"></p>
+      <div class="rcpt" id="rcpt">
+        <h3>領　収　書</h3>
+        <div class="r-to"><span id="rc-to"></span> 様</div>
+        <div class="r-amt">￥45,900－</div>
+        <div class="r-line">但し　Merone AI活用らぼ♡ 参加費として</div>
+        <div class="r-line">上記正に領収いたしました</div>
+        <div class="r-line" id="rc-date"></div>
+        <div class="r-line" id="rc-no"></div>
+        <div class="r-iss"><b>株式会社Merone</b><br><span id="rc-addr">（住所）</span><br><span id="rc-inv"></span></div>
+        <div style="text-align:center;margin-top:14px"><button class="subbtn" onclick="window.print()">🖨 印刷 / PDF保存</button></div>
+      </div>
+    </div>
+    <div id="retry" style="display:none">
+      <div class="ok">🧐</div>
+      <h2>スクショを確認できませんでした</h2>
+      <p id="retrymsg">金額（¥45,900）が読み取れませんでした。<br><b>金額がはっきり写った完了画面</b>を、もう一度お送りください。</p>
+      <button class="retrybtn" id="retryBtn">もう一度 送りなおす</button>
+      <p style="margin-top:14px;font-size:.85rem"><a id="troubleLink2" class="trouble" href="#" target="_blank" rel="noopener" style="color:var(--accent);font-weight:700">うまくいかない方はこちら</a></p>
+    </div>
+    <div id="waiting" style="display:none">
+      <div class="spin"></div>
+      <h2 style="font-size:1.1rem;margin-top:14px">確認に少しお時間をいただいています</h2>
+      <p>このページを開いたまま、もう少しだけお待ちください🙏<br>5分以上たっても案内が出ない場合は、<a id="troubleLink3" href="#" target="_blank" rel="noopener" style="color:var(--accent);font-weight:700">こちら</a>までご連絡ください。</p>
+    </div>
+  </div>
+</div>
+
+<!-- 🍺 バグ報告 -->
+<div class="bugov" id="bugov">
+  <div class="bugcard">
+    <h3>🍺 不具合の報告</h3>
+    <p>気になったこと・動かないところを書いて送ってね。今の画面の状況も一緒に記録されます。</p>
+    <textarea id="bugtext" placeholder="例：送信ボタンを押しても反応しない／領収書が出ない など"></textarea>
+    <div class="bugrow"><button id="bugcancel">とじる</button><button class="send" id="bugsend">送信する</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast">送信しました</div>
+
+<script>
+(function(){
+  "use strict";
+  /* ============ 設定（くみこが差し込む穴） ============ */
+  var CFG = {
+    GAS_URL: "https://script.google.com/macros/s/AKfycbz5DjmMV5JjVTX_aW0Z-lMHmZ6DS0emk-eI4mnyT6TA3qwLjB79kRACxYV0_Zv2fS9-/exec",
+    PAYPAL_LINK: "https://no-guard.com/p/r/j6UBJxyQ?openExternalBrowser=1",
+    OPENCHAT_URL: "https://line.me/ti/g2/XIZ5Hz2zhc6guBnuFiwCz1mu_oFG0MLPrvvdDg?utm_source=invitation&utm_medium=link_copy&utm_campaign=default",
+    SUPPORT_LINE: "https://fv9f75lk.autosns.app/line?openExternalBrowser=1",  // AI勉強会のLINE（決済エラー連絡先）
+    MERONE_ADDR: "〒105-0022 東京都港区海岸1-4-22 SNビル",
+    INVOICE_NO: "T2011501024815",
+    TOKUSHO_URL: "tokusho.html"
+  };
+
+  /* ============ JSエラーの記録（🍺バグ報告用） ============ */
+  var _errs=[];
+  function logErr(k,m,w){ try{ _errs.push({k:k,m:String(m).slice(0,300),w:w?String(w).slice(0,200):"",at:new Date().toLocaleTimeString()}); if(_errs.length>20)_errs.shift(); }catch(e){} }
+  window.addEventListener("error",function(e){ logErr("error",e.message,(e.filename||"")+":"+(e.lineno||"")); });
+  window.addEventListener("unhandledrejection",function(e){ logErr("promise",(e.reason&&e.reason.message)||e.reason,""); });
+
+  function $(id){ return document.getElementById(id); }
+
+  /* 設定反映 */
+  try{
+    var pp=$("ppbtn");
+    if(CFG.PAYPAL_LINK){ pp.href=CFG.PAYPAL_LINK; } else { pp.classList.add("disabled"); $("ppwarn").style.display="block"; }
+    $("ocbtn").href=CFG.OPENCHAT_URL;
+    [ "troubleLink","troubleLink2","troubleLink3" ].forEach(function(id){ var el=$(id); if(el) el.href=CFG.SUPPORT_LINE||CFG.OPENCHAT_URL; });
+    if(CFG.TOKUSHO_URL) $("tokushoLink").href=CFG.TOKUSHO_URL;
+    $("rc-addr").textContent=CFG.MERONE_ADDR;
+    $("rc-inv").textContent=CFG.INVOICE_NO?("登録番号 "+CFG.INVOICE_NO):"";
+  }catch(e){ logErr("init",e.message,""); }
+
+  /* 決済タブ */
+  var payMethod="paypal";
+  document.querySelectorAll(".pay-tab").forEach(function(t){
+    t.addEventListener("click",function(){
+      document.querySelectorAll(".pay-tab").forEach(function(x){x.classList.remove("on");});
+      document.querySelectorAll(".pay-body").forEach(function(x){x.classList.remove("on");});
+      t.classList.add("on"); payMethod=t.getAttribute("data-pay"); $("pay-"+payMethod).classList.add("on");
+    });
+  });
+
+  /* 画像アップ＆圧縮 */
+  var imgData=null;
+  var drop=$("drop"), file=$("file"), thumb=$("thumb"), thumbimg=$("thumbimg");
+  drop.addEventListener("click",function(){ file.click(); });
+  $("rm").addEventListener("click",function(){ imgData=null; file.value=""; thumb.style.display="none"; drop.style.display="block"; });
+  file.addEventListener("change",function(){
+    var f=file.files&&file.files[0]; if(!f) return;
+    compress(f,function(u){ imgData=u; thumbimg.src=u; thumb.style.display="block"; drop.style.display="none"; clearErr(); },
+                 function(){ alert("画像を読み込めませんでした。別の画像でお試しください。"); });
+  });
+  function compress(f,ok,ng){
+    try{
+      var url=URL.createObjectURL(f), img=new Image();
+      img.onload=function(){ try{
+        URL.revokeObjectURL(url);
+        var max=1400, sc=Math.min(1,max/Math.max(img.width,img.height));
+        var c=document.createElement("canvas"); c.width=Math.max(1,Math.round(img.width*sc)); c.height=Math.max(1,Math.round(img.height*sc));
+        c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+        var out=c.toDataURL("image/jpeg",0.82);
+        if(out.length>1100*1024) out=c.toDataURL("image/jpeg",0.6);
+        ok(out);
+      }catch(e){ logErr("compress",e.message,""); ng&&ng(); } };
+      img.onerror=function(){ URL.revokeObjectURL(url); ng&&ng(); };
+      img.src=url;
+    }catch(e){ logErr("compress2",e.message,""); ng&&ng(); }
+  }
+
+  function clearErr(){ $("err").classList.remove("show"); [ "name","uate" ].forEach(function(id){ $(id).classList.remove("invalid"); }); }
+  [ "name","uate" ].forEach(function(id){ $(id).addEventListener("input",clearErr); });
+
+  /* JSONP（GASの状態ポーリング用・CORS回避） */
+  function jsonp(url,cb){
+    var done=false, name="__cb"+Math.random().toString(36).slice(2);
+    var s=document.createElement("script");
+    var to=setTimeout(function(){ if(done)return; done=true; cleanup(); cb(null); }, 8000);
+    function cleanup(){ try{ delete window[name]; }catch(e){ window[name]=undefined; } if(s.parentNode) s.parentNode.removeChild(s); clearTimeout(to); }
+    window[name]=function(data){ if(done)return; done=true; cleanup(); cb(data); };
+    s.onerror=function(){ if(done)return; done=true; cleanup(); cb(null); };
+    s.src=url+(url.indexOf("?")<0?"?":"&")+"callback="+name+"&_="+Date.now();
+    document.body.appendChild(s);
+  }
+
+  /* 送信＝ゲート付き（OCRで金額チェック→verifiedのみ案内） */
+  var ov=$("ov"), token=null, receiptNo=null;
+  function showPane(which){
+    [ "checking","done","retry","waiting" ].forEach(function(id){ $(id).style.display=(id===which)?"block":"none"; });
+    ov.classList.add("show");
+  }
+  function toDone(flagged){
+    try{
+      $("rc-to").textContent=($("uate").value.trim());
+      var d=new Date();
+      $("rc-date").textContent="発行日　"+d.getFullYear()+"年"+(d.getMonth()+1)+"月"+d.getDate()+"日";
+      $("rc-no").textContent="No. "+receiptNo;
+      $("rno").textContent="受付番号："+receiptNo+(flagged?"（確認中の項目あり）":"");
+    }catch(e){ logErr("done",e.message,""); }
+    showPane("done");
+  }
+
+  $("submit").addEventListener("click",function(){
+    var name=$("name").value.trim(), uate=$("uate").value.trim(), lineName=$("lineName").value.trim();
+    if(!imgData || !name || !uate){
+      $("err").classList.add("show");
+      if(!imgData){ drop.scrollIntoView({behavior:"smooth",block:"center"}); }
+      else { var bad=!name?"name":"uate"; $(bad).classList.add("invalid"); $(bad).scrollIntoView({behavior:"smooth",block:"center"}); }
+      return;
+    }
+    token="t"+Date.now()+Math.random().toString(36).slice(2,7);
+    receiptNo="M"+(Date.now().toString().slice(-8));
+    var payload={ action:"apply", token:token, receiptNo:receiptNo, name:name, lineName:lineName, uate:uate,
+                  method:(payMethod==="bank"?"銀行振込":"PayPal"), amount:45900, image:imgData };
+    showPane("checking");
+    if(CFG.GAS_URL){
+      try{ fetch(CFG.GAS_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)}); }
+      catch(e){ logErr("post",e.message,""); }
+      poll(0);
+    } else {
+      // 未接続（プレビュー）時：デモとして通す
+      setTimeout(function(){ toDone(false); }, 1200);
+    }
+  });
+
+  function poll(tries){
+    if(!CFG.GAS_URL){ return; }
+    jsonp(CFG.GAS_URL+"?check="+encodeURIComponent(token), function(res){
+      var st = res && res.status;
+      if(st==="verified"){ toDone(false); }
+      else if(st==="review"){ toDone(true); }
+      else if(st==="rejected"){ showPane("retry"); }
+      else {
+        if(tries<16){ setTimeout(function(){ poll(tries+1); }, 2500); }
+        else { showPane("waiting"); slowPoll(); }
+      }
+    });
+  }
+  function slowPoll(){ // 待機画面でも裏で確認継続（安全側：自動では通さない）
+    jsonp(CFG.GAS_URL+"?check="+encodeURIComponent(token), function(res){
+      var st=res&&res.status;
+      if(st==="verified"){ toDone(false); }
+      else if(st==="review"){ toDone(true); }
+      else if(st==="rejected"){ showPane("retry"); }
+      else { setTimeout(slowPoll, 5000); }
+    });
+  }
+
+  $("retryBtn").addEventListener("click",function(){
+    ov.classList.remove("show");
+    imgData=null; file.value=""; thumb.style.display="none"; drop.style.display="block";
+    drop.scrollIntoView({behavior:"smooth",block:"center"});
+  });
+  $("showRcpt").addEventListener("click",function(){
+    var r=$("rcpt"); r.style.display=(r.style.display==="block")?"none":"block";
+    if(r.style.display==="block") r.scrollIntoView({behavior:"smooth",block:"center"});
+  });
+
+  /* ============ 🍺 バグ報告 ============ */
+  var bugov=$("bugov");
+  $("bugbtn").addEventListener("click",function(){ bugov.classList.add("show"); });
+  $("bugcancel").addEventListener("click",function(){ bugov.classList.remove("show"); });
+  bugov.addEventListener("click",function(e){ if(e.target===bugov) bugov.classList.remove("show"); });
+  $("bugsend").addEventListener("click",function(){
+    var t=$("bugtext").value.trim();
+    var diag={ action:"bug", text:t, page:"apply", token:token||"", payMethod:payMethod, hasImage:!!imgData,
+               errors:_errs.slice(-10), ua:navigator.userAgent, url:location.href, time:new Date().toString(),
+               screen:(screen.width+"x"+screen.height), win:(window.innerWidth+"x"+window.innerHeight) };
+    if(CFG.GAS_URL){ try{ fetch(CFG.GAS_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(diag)}); }catch(e){} }
+    bugov.classList.remove("show"); $("bugtext").value="";
+    var to=$("toast"); to.textContent="🍺 報告を送りました。ありがとう！"; to.classList.add("show"); setTimeout(function(){ to.classList.remove("show"); },1800);
+  });
+})();
+</script>
+</body></html>
