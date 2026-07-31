@@ -1,0 +1,200 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light">
+<title>Merone AI活用らぼ♡ 申込フォーム</title>
+<style>
+  :root{color-scheme:light;--ground:#FAFBFD;--panel:#FFF;--panel-2:#F3F5FA;--ink:#1E2A44;--ink-soft:#4A5670;--muted:#6E7890;--line:#E3E8F1;--line-strong:#D2D9E8;--accent:#4A7BB5;--pink:#C97E92;--navy:#2E4372;
+    --shadow:0 1px 2px rgba(30,42,68,.05),0 8px 24px rgba(30,42,68,.06);--shadow-lg:0 2px 6px rgba(30,42,68,.08),0 18px 48px rgba(30,42,68,.10);
+    --font:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic","Meiryo",system-ui,sans-serif;--mincho:"Hiragino Mincho ProN","Yu Mincho",Georgia,serif;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--font);line-height:1.75;-webkit-font-smoothing:antialiased;font-feature-settings:"palt" 1}
+  .wrap{max-width:600px;margin:0 auto;padding:0 18px}
+  .hero{background:linear-gradient(160deg,#fdf1f4,#eef4fb);border-bottom:1px solid var(--line);padding:32px 0 24px;text-align:center}
+  .hero .eb{font-size:.72rem;letter-spacing:.24em;color:var(--accent);font-weight:800;margin:0 0 10px}
+  h1{font-size:clamp(1.4rem,5vw,1.9rem);font-weight:800;margin:0 0 8px;line-height:1.4}
+  .hero p{color:var(--ink-soft);font-size:.92rem;margin:6px 0 0}
+  .price{display:inline-block;margin-top:12px;background:var(--navy);color:#fff;font-weight:800;font-size:.92rem;padding:6px 16px;border-radius:999px}
+  main{padding:22px 0 40px}
+  .q{margin:0 0 22px}
+  label.lb{display:block;font-size:.98rem;font-weight:800;margin:0 0 8px;line-height:1.5}
+  label.lb .req{display:inline-block;font-size:.66rem;font-weight:800;color:#fff;background:var(--pink);padding:1px 8px;border-radius:999px;margin-left:6px;vertical-align:middle}
+  label.lb small{display:block;font-size:.78rem;color:var(--muted);font-weight:500;margin-top:2px}
+  input[type=text],input[type=email],input[type=tel],textarea{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;font-family:var(--font);font-size:1rem;color:var(--ink);background:var(--panel)}
+  input:focus,textarea:focus{outline:none;border-color:var(--accent)}
+  input.invalid,textarea.invalid,.opts.invalid{border-color:#D0596A;background:color-mix(in srgb,#D0596A 6%,var(--panel))}
+  textarea{min-height:88px;resize:vertical}
+  .opts{display:flex;flex-direction:column;gap:8px}
+  .opt{display:flex;align-items:center;gap:10px;padding:11px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--panel);cursor:pointer;font-size:.96rem;color:var(--ink-soft)}
+  .opt input{position:absolute;opacity:0;width:0;height:0}
+  .opt .box{width:20px;height:20px;border:2px solid var(--line-strong);border-radius:50%;flex:none;position:relative}
+  .opt input:checked+.box{border-color:var(--accent)}
+  .opt input:checked+.box::after{content:"";position:absolute;left:4px;top:4px;width:8px;height:8px;border-radius:50%;background:var(--accent)}
+  .opt:has(input:checked){border-color:var(--accent);background:color-mix(in srgb,var(--accent) 7%,var(--panel));color:var(--ink);font-weight:600}
+  .agree{display:flex;align-items:flex-start;gap:11px;padding:14px;border:1.5px solid var(--line);border-radius:12px;background:var(--panel-2);cursor:pointer}
+  .agree input{position:absolute;opacity:0;width:0;height:0}
+  .agree .box{width:22px;height:22px;border:2px solid var(--line-strong);border-radius:7px;flex:none;background:#fff;position:relative;margin-top:1px}
+  .agree input:checked+.box{background:var(--accent);border-color:var(--accent)}
+  .agree input:checked+.box::after{content:"";position:absolute;left:6px;top:2px;width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+  .agree .t{font-size:.92rem;color:var(--ink)}
+  .agree a{color:var(--accent);font-weight:700}
+  .fielderr{display:none;color:#C33D53;font-size:.8rem;font-weight:700;margin:6px 0 0}
+  .fielderr.show{display:block}
+  .submit{width:100%;border:none;border-radius:999px;background:var(--navy);color:#fff;font-family:var(--font);font-size:1.08rem;font-weight:800;padding:17px;margin-top:8px;cursor:pointer;box-shadow:0 10px 26px rgba(46,67,114,.28);transition:transform .15s}
+  .submit:hover{transform:translateY(-1px)}
+  footer{border-top:1px solid var(--line);margin-top:26px;padding:20px 0 60px;text-align:center;color:var(--muted);font-size:.8rem}
+  footer a{color:var(--muted);text-decoration:underline}
+  .ov{position:fixed;inset:0;z-index:100;background:rgba(20,25,40,.55);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;padding:20px}
+  .ov.show{display:flex}
+  .ovcard{background:var(--panel);border-radius:20px;max-width:480px;width:100%;padding:28px 22px;box-shadow:var(--shadow-lg);text-align:center}
+  .ovcard .ok{font-size:2.6rem}
+  .ovcard h2{font-size:1.3rem;font-weight:800;margin:8px 0 6px}
+  .ovcard p{color:var(--ink-soft);font-size:.95rem;margin:0 0 6px}
+  .paybtn{display:block;background:var(--navy);color:#fff;font-weight:800;font-size:1.06rem;padding:16px;border-radius:14px;text-decoration:none;margin:18px 0 6px;box-shadow:0 8px 22px rgba(46,67,114,.28)}
+  .spin{width:44px;height:44px;border:4px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:sp 1s linear infinite;margin:6px auto 0}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .bugbtn{position:fixed;left:14px;bottom:14px;z-index:90;width:52px;height:52px;border-radius:50%;border:none;background:#fff;box-shadow:0 6px 18px rgba(30,42,68,.22);font-size:1.5rem;cursor:pointer;padding:0}
+  .bugov{position:fixed;inset:0;z-index:120;background:rgba(20,25,40,.5);display:none;align-items:center;justify-content:center;padding:20px}
+  .bugov.show{display:flex}
+  .bugcard{background:var(--panel);border-radius:18px;max-width:440px;width:100%;padding:22px}
+  .bugcard h3{margin:0 0 4px;font-size:1.1rem;font-weight:800}.bugcard p{margin:0 0 12px;font-size:.85rem;color:var(--muted)}
+  .bugcard textarea{min-height:80px}
+  .bugrow{display:flex;gap:10px;margin-top:14px}.bugrow button{flex:1;border-radius:999px;padding:13px;font-weight:800;cursor:pointer;border:1.5px solid var(--line);background:var(--panel);color:var(--ink-soft)}
+  .bugrow button.send{background:#F6B31E;border-color:#F6B31E;color:#4a2f00}
+  .toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%) translateY(20px);opacity:0;background:var(--ink);color:#fff;padding:11px 20px;border-radius:999px;font-size:.86rem;font-weight:700;z-index:200;transition:all .3s;pointer-events:none}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+
+</head>
+<body>
+<div class="hero">
+  <div class="wrap">
+    <p class="eb">Merone AI活用らぼ♡</p>
+    <h1>お申込みフォーム</h1>
+    <p>ご参加にあたり、下記のご記入をお願いいたします☺</p>
+    <div class="price">参加費 ¥45,900（税込）</div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="q"><label class="lb">メールアドレス<span class="req">必須</span></label>
+    <input type="email" id="email" placeholder="example@mail.com" autocomplete="email"><p class="fielderr" data-for="email">メールアドレスを正しくご入力ください</p></div>
+
+  <div class="q"><label class="lb">お名前（漢字・フルネーム）<span class="req">必須</span></label>
+    <input type="text" id="name" placeholder="山田 花子" autocomplete="name"><p class="fielderr" data-for="name">お名前をご入力ください</p></div>
+
+  <div class="q"><label class="lb">性別<span class="req">必須</span></label>
+    <div class="opts" id="genderOpts">
+      <label class="opt"><input type="radio" name="gender" value="女性"><span class="box"></span>女性</label>
+      <label class="opt"><input type="radio" name="gender" value="男性"><span class="box"></span>男性</label>
+      <label class="opt"><input type="radio" name="gender" value="その他・回答しない"><span class="box"></span>その他・回答しない</label>
+    </div><p class="fielderr" data-for="gender">性別をお選びください</p></div>
+
+  <div class="q"><label class="lb">ご住所<span class="req">必須</span></label>
+    <input type="text" id="address" placeholder="東京都〇〇区〇〇1-2-3" autocomplete="street-address"><p class="fielderr" data-for="address">ご住所をご入力ください</p></div>
+
+  <div class="q"><label class="lb">電話番号<span class="req">必須</span><small>※ ハイフン不要</small></label>
+    <input type="tel" id="tel" placeholder="09012345678" autocomplete="tel"><p class="fielderr" data-for="tel">電話番号をご入力ください</p></div>
+
+  <div class="q"><label class="lb">LINE名<span class="req">必須</span><small>※ オープンチャットで表示されるお名前（本人確認に使います）</small></label>
+    <input type="text" id="lineName" placeholder="LINEの表示名"><p class="fielderr" data-for="lineName">LINE名をご入力ください</p></div>
+
+  <div class="q"><label class="lb">今のAI活用の状況・お困りごと<span class="req">必須</span><small>※ 具体的に教えてください</small></label>
+    <textarea id="aiStatus" placeholder="例：ChatGPTは少し触ったことがあるが、仕事にどう使えばいいか分からない など"></textarea><p class="fielderr" data-for="aiStatus">ご記入ください</p></div>
+
+  <div class="q"><label class="lb">このプログラムに期待すること<span class="req">必須</span></label>
+    <textarea id="expect" placeholder="例：AIで日々の作業を時短して、収入の柱を増やしたい など"></textarea><p class="fielderr" data-for="expect">ご記入ください</p></div>
+
+  <div class="q"><label class="lb">お申込みを決めた理由<span class="req">必須</span></label>
+    <textarea id="reason" placeholder="例：勉強会で実際のツールを見て、自分にもできそうだと思った など"></textarea><p class="fielderr" data-for="reason">ご記入ください</p></div>
+
+  <div class="q">
+    <label class="agree"><input type="checkbox" id="agree"><span class="box"></span><span class="t">受講規約および<a id="tokushoLink" href="#" target="_blank" rel="noopener">特定商取引法に基づく表記</a>の内容（お申込み後のキャンセル・返金は不可）に同意します。</span></label>
+    <p class="fielderr" data-for="agree">ご同意のうえお進みください</p>
+  </div>
+
+  <button class="submit" id="submit">この内容で申し込む →</button>
+  <footer>
+    <p>株式会社Merone｜Merone AI活用らぼ♡</p>
+    <p><a id="tokushoLink2" href="#">特定商取引法に基づく表記</a></p>
+  </footer>
+</main>
+
+<button class="bugbtn" id="bugbtn" title="不具合を報告">🍺</button>
+
+<div class="ov" id="ov">
+  <div class="ovcard">
+    <div id="sending"><div class="spin"></div><p style="margin-top:14px">送信中…そのままお待ちください</p></div>
+    <div id="done" style="display:none">
+      <div class="ok">✅</div>
+      <h2>お申込みを受け付けました</h2>
+      <p>ありがとうございます！<br>続いて、<b>お支払い</b >にお進みください。</p>
+      <a class="paybtn" id="payLink" href="#">お支払いに進む →</a>
+      <p style="font-size:.82rem;color:var(--muted);margin-top:10px">※ お支払い後、完了画面のスクショを送るとコミュニティにご案内します。</p>
+    </div>
+  </div>
+</div>
+
+<div class="bugov" id="bugov">
+  <div class="bugcard"><h3>🍺 不具合の報告</h3><p>気になったこと・動かないところを書いて送ってね。今の画面の状況も記録されます。</p>
+    <textarea id="bugtext" placeholder="例：送信ボタンを押しても反応しない など"></textarea>
+    <div class="bugrow"><button id="bugcancel">とじる</button><button class="send" id="bugsend">送信する</button></div></div>
+</div>
+<div class="toast" id="toast">送信しました</div>
+
+<script>
+(function(){
+  "use strict";
+  var CFG={
+    GAS_URL:"https://script.google.com/macros/s/AKfycbz5DjmMV5JjVTX_aW0Z-lMHmZ6DS0emk-eI4mnyT6TA3qwLjB79kRACxYV0_Zv2fS9-/exec",
+    PAY_URL:"https://kumiko0814.github.io/merone-ai-labo/",
+    TOKUSHO_URL:"https://kumiko0814.github.io/merone-ai-labo/tokusho.html"
+  };
+  var _errs=[];
+  function logErr(k,m,w){ try{ _errs.push({k:k,m:String(m).slice(0,300),w:w||'',at:new Date().toLocaleTimeString()}); if(_errs.length>20)_errs.shift(); }catch(e){} }
+  window.addEventListener("error",function(e){ logErr("error",e.message,(e.filename||"")+":"+(e.lineno||"")); });
+  window.addEventListener("unhandledrejection",function(e){ logErr("promise",(e.reason&&e.reason.message)||e.reason,""); });
+  function $(id){ return document.getElementById(id); }
+
+  try{
+    $("payLink").href=CFG.PAY_URL;
+    $("tokushoLink").href=CFG.TOKUSHO_URL; $("tokushoLink2").href=CFG.TOKUSHO_URL;
+  }catch(e){ logErr("init",e.message,""); }
+
+  function showErr(f,on){ var el=document.querySelector('.fielderr[data-for="'+f+'"]'); if(el) el.classList.toggle("show",!!on);
+    var node = (f==="gender")?$("genderOpts"):$(f); if(node) node.classList.toggle("invalid",!!on); }
+  ["email","name","address","tel","lineName","aiStatus","expect","reason"].forEach(function(f){ var el=$(f); if(el) el.addEventListener("input",function(){ showErr(f,false); }); });
+  document.querySelectorAll('input[name="gender"]').forEach(function(r){ r.addEventListener("change",function(){ showErr("gender",false); }); });
+  $("agree").addEventListener("change",function(){ showErr("agree",false); });
+
+  function val(id){ return ($(id).value||"").trim(); }
+  function gender(){ var r=document.querySelector('input[name="gender"]:checked'); return r?r.value:""; }
+  function emailOk(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+  var ov=$("ov");
+  $("submit").addEventListener("click",function(){
+    var d={ action:"form", email:val("email"), name:val("name"), gender:gender(), address:val("address"),
+            tel:val("tel"), lineName:val("lineName"), aiStatus:val("aiStatus"), expect:val("expect"),
+            reason:val("reason"), agree:$("agree").checked };
+    var bad=null;
+    if(!emailOk(d.email)){ showErr("email",true); bad=bad||"email"; }
+    [["name",d.name],["address",d.address],["tel",d.tel],["lineName",d.lineName],["aiStatus",d.aiStatus],["expect",d.expect],["reason",d.reason]].forEach(function(p){ if(!p[1]){ showErr(p[0],true); bad=bad||p[0]; } });
+    if(!d.gender){ showErr("gender",true); bad=bad||"gender"; }
+    if(!d.agree){ showErr("agree",true); bad=bad||"agree"; }
+    if(bad){ var node=(bad==="gender")?$("genderOpts"):(bad==="agree"?$("agree"):$(bad)); if(node&&node.scrollIntoView) node.scrollIntoView({behavior:"smooth",block:"center"}); return; }
+
+    ov.classList.add("show"); $("sending").style.display="block"; $("done").style.display="none";
+    if(CFG.GAS_URL){ try{ fetch(CFG.GAS_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(d)}); }catch(e){ logErr("post",e.message,""); } }
+    setTimeout(function(){ $("sending").style.display="none"; $("done").style.display="block"; }, 1200);
+  });
+
+  var bugov=$("bugov");
+  $("bugbtn").addEventListener("click",function(){ bugov.classList.add("show"); });
+  $("bugcancel").addEventListener("click",function(){ bugov.classList.remove("show"); });
+  bugov.addEventListener("click",function(e){ if(e.target===bugov) bugov.classList.remove("show"); });
+  $("bugsend").addEventListener("click",function(){
+    var diag={ action:"bug", text:$("bugtext").value.trim(), page:"apply-form", hasImage:false, errors:_errs.slice(-10), ua:navigator.userAgent, url:location.href, time:new Date().toString(), screen:(screen.width+"x"+screen.height) };
+    if(CFG.GAS_URL){ try{ fetch(CFG.GAS_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(diag)}); }catch(e){} }
+    bugov.classList.remove("show"); $("bugtext").value="";
+    var to=$("toast"); to.textContent="🍺 報告を送りました。ありがとう！"; to.classList.add("show"); setTimeout(function(){ to.classList.remove("show"); },1800);
+  });
+})();
+</script>
+</body></html>
