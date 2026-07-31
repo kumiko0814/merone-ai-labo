@@ -116,6 +116,7 @@
     <p class="eyebrow">Merone ／ 特別ご案内</p>
     <h1>Merone AI活用らぼ♡<br>お申込み</h1>
     <div class="price">¥45,900<small>税込</small></div>
+    <p style="margin:-4px 0 0;font-size:.9rem;color:var(--accent);font-weight:700">銀行振込なら ¥43,500（税込）</p>
     <p>お支払い後、完了画面のスクリーンショットを送っていただくと、<br>確認のうえコミュニティにご案内します☺</p>
   </div>
 </div>
@@ -135,13 +136,13 @@
     </div>
     <div class="pay-body" id="pay-bank">
       <h3>銀行振込でお支払い</h3>
-      <p>下記口座に <b>¥45,900</b> をお振込みください。<b>振込明細のスクリーンショット</b>を、STEP2でアップしてね。</p>
+      <p>下記口座に <b>¥43,500</b> をお振込みください。<b>振込明細のスクリーンショット</b>を、STEP2でアップしてね。</p>
       <div class="bank">
         <div class="row"><span>銀行</span><b>GMOあおぞらネット銀行</b></div>
         <div class="row"><span>支店</span><b>法人営業部</b></div>
         <div class="row"><span>口座番号</span><b>1262392</b></div>
         <div class="row"><span>名義</span><b>カ)メローネ</b></div>
-        <div class="row"><span>金額</span><b>¥45,900</b></div>
+        <div class="row"><span>金額</span><b>¥43,500</b></div>
       </div>
       <p style="margin-top:10px;font-size:.82rem;color:var(--muted)">※ 振込手数料はご負担ください。</p>
     </div>
@@ -153,7 +154,7 @@
     <div class="drop" id="drop"><div class="di">📷</div><div class="dt">タップで画像を選ぶ</div><div class="ds">PayPal完了画面／振込明細のスクショ</div></div>
     <input type="file" id="file" accept="image/*" style="display:none">
     <div class="thumb" id="thumb"><img id="thumbimg" alt="プレビュー"><button class="rm" id="rm" aria-label="削除">×</button></div>
-    <div class="secnote">🔒 送信されたスクショは、<b>¥45,900の完了画面かどうかを自動でチェック</b>します。金額が確認できた方だけ、その場でコミュニティにご案内します。</div>
+    <div class="secnote">🔒 送信されたスクショは、<b>金額（PayPal ¥45,900／銀行振込 ¥43,500）の完了画面かどうかを自動でチェック</b>します。金額が確認できた方だけ、その場でコミュニティにご案内します。</div>
 
     <label class="fld">お名前 <span class="req">必須</span></label>
     <input type="text" id="name" placeholder="山田 花子" autocomplete="name">
@@ -192,7 +193,7 @@
     <div id="retry" style="display:none">
       <div class="ok">🧐</div>
       <h2>スクショを確認できませんでした</h2>
-      <p id="retrymsg">金額（¥45,900）が読み取れませんでした。<br><b>金額がはっきり写った完了画面</b>を、もう一度お送りください。</p>
+      <p id="retrymsg">金額（PayPal ¥45,900／銀行振込 ¥43,500）が読み取れませんでした。<br><b>金額がはっきり写った完了画面</b>を、もう一度お送りください。</p>
       <button class="retrybtn" id="retryBtn">もう一度 送りなおす</button>
       <p style="margin-top:14px;font-size:.85rem"><a id="troubleLink2" class="trouble" href="#" target="_blank" rel="noopener" style="color:var(--accent);font-weight:700">うまくいかない方はこちら</a></p>
     </div>
@@ -322,7 +323,7 @@
     token="t"+Date.now()+Math.random().toString(36).slice(2,7);
     receiptNo="M"+(Date.now().toString().slice(-8));
     var payload={ action:"apply", token:token, receiptNo:receiptNo, name:name, lineName:lineName, uate:"",
-                  method:(payMethod==="bank"?"銀行振込":"PayPal"), amount:45900, image:imgData };
+                  method:(payMethod==="bank"?"銀行振込":"PayPal"), amount:(payMethod==="bank"?43500:45900), image:imgData };
     showPane("checking");
     if(CFG.GAS_URL){
       try{ fetch(CFG.GAS_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)}); }
