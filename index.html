@@ -75,6 +75,23 @@
   .ovcard h2{font-size:1.35rem;font-weight:800;margin:8px 0 6px}
   .ovcard p{color:var(--ink-soft);font-size:.95rem;margin:0 0 6px}
   .ocbtn{display:block;background:#06C755;color:#fff;font-weight:800;font-size:1.08rem;padding:16px;border-radius:14px;text-decoration:none;margin:18px 0 10px;box-shadow:0 8px 22px rgba(6,199,85,.28)}
+  .ocbtn.disabled{background:#C4CBD8;box-shadow:none;pointer-events:none;cursor:not-allowed}
+  .kread{font-size:.8rem;color:var(--accent);font-weight:700;margin:14px 0 8px;text-align:left}
+  .kread.done{color:var(--muted)}
+  .kiyaku{border:1.5px solid var(--line);border-radius:12px;background:var(--panel);padding:13px 15px;max-height:230px;overflow-y:auto;-webkit-overflow-scrolling:touch;font-size:.8rem;line-height:1.8;color:var(--ink-soft);margin:0 0 10px;text-align:left}
+  .kiyaku h4{font-size:.9rem;font-weight:800;color:var(--navy);margin:0 0 8px;text-align:center}
+  .kiyaku .art{margin:0 0 9px}
+  .kiyaku .art b{color:var(--ink);display:block;font-size:.82rem}
+  .kiyaku .company{margin-top:12px;padding-top:10px;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted)}
+  .kiyaku a{color:var(--accent);font-weight:700}
+  .agree{display:flex;align-items:flex-start;gap:11px;padding:13px;border:1.5px solid var(--line);border-radius:12px;background:var(--panel-2);cursor:pointer;transition:opacity .2s;text-align:left}
+  .agree.locked{opacity:.5;pointer-events:none}
+  .agree input{position:absolute;opacity:0;width:0;height:0}
+  .agree .box{width:22px;height:22px;border:2px solid var(--line-strong);border-radius:7px;flex:none;background:#fff;position:relative;margin-top:1px}
+  .agree input:checked+.box{background:var(--accent);border-color:var(--accent)}
+  .agree input:checked+.box::after{content:"";position:absolute;left:6px;top:2px;width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+  .agree .t{font-size:.88rem;color:var(--ink)}
+  .agree a{color:var(--accent);font-weight:700}
   .subbtn{display:inline-block;margin:4px;padding:11px 18px;border-radius:999px;border:1.5px solid var(--line-strong);background:var(--panel);color:var(--ink-soft);font-weight:700;font-size:.9rem;text-decoration:none;cursor:pointer}
   .rno{font-size:.82rem;color:var(--muted);margin-top:10px}
   .spin{width:44px;height:44px;border:4px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:sp 1s linear infinite;margin:6px auto 0}
@@ -186,8 +203,30 @@
     <div id="done" style="display:none">
       <div class="ok">🎉</div>
       <h2>確認できました！ありがとうございます</h2>
-      <p>続いて、<b>お申込みフォーム</b>のご記入をお願いします。<br>ご記入いただくと、コミュニティにご案内します☺</p>
-      <a class="ocbtn" id="ocbtn" href="#">お申込みフォームのご記入へ →</a>
+      <p>最後に、<b>受講規約</b>をご確認のうえ、ご同意ください☺</p>
+      <p class="kread" id="kread">▼ 最後までスクロールしてお読みください（読み終わると下のチェックが押せます）</p>
+      <div class="kiyaku" id="kiyakuBox">
+        <h4>Merone AI活用らぼ♡ 受講規約</h4>
+        <div class="art"><b>第1条（適用）</b>本規約は、株式会社Merone（以下「当社」）が提供する「Merone AI活用らぼ♡」（以下「本サービス」）の利用に関し、当社と受講者との一切の関係に適用されます。</div>
+        <div class="art"><b>第2条（定義）</b>「受講者」とは、本規約に同意のうえ本サービスへの参加を申し込み、当社が承認した個人をいいます。</div>
+        <div class="art"><b>第3条（申込および契約の成立）</b>本サービスへの申込は当社所定の方法により行い、受講者が受講料を支払い、当社がその入金を確認した時点で契約が成立します。</div>
+        <div class="art"><b>第4条（受講料・お支払い）</b>本サービスの受講料は、クレジットカード（PayPal）の場合 金45,900円（税込）、銀行振込の場合 金43,500円（税込）とします。お支払い方法はクレジットカード（PayPal）または銀行振込とし、お申込み時にお支払いいただきます。銀行振込の場合の振込手数料は受講者の負担とします。</div>
+        <div class="art"><b>第5条（キャンセル・返金）</b>本サービスは役務（コンサルティング・デジタルコンテンツ）の性質上、お申込み・お支払い後のキャンセルおよび返金は、理由の如何を問わず一切お受けできません。</div>
+        <div class="art"><b>第6条（提供内容）</b>本サービスは、AI活用に関する勉強会、コミュニティ（LINEオープンチャット）での情報提供・交流、その他当社が定めるコンテンツの提供を含みます。提供内容・日程は、当社の判断により変更されることがあります。</div>
+        <div class="art"><b>第7条（提供期間）</b>本サービスの提供期間は、当社が別途定める期間とします。</div>
+        <div class="art"><b>第8条（禁止事項）</b>受講者は次の行為をしてはなりません。①本サービスで提供される資料・動画・音声・チャット内容等を、当社の許可なく第三者へ提供・転載・共有・販売する行為　②本サービスの録画・録音・スクリーンショット等を第三者へ開示する行為　③他の受講者・当社・第三者を誹謗中傷し、または名誉・信用を毀損する行為　④コミュニティ内での勧誘・営業・宗教活動等　⑤法令または公序良俗に反する行為　⑥その他、当社が不適切と判断する行為。</div>
+        <div class="art"><b>第9条（知的財産権）</b>本サービスで提供される一切のコンテンツに関する著作権その他の知的財産権は、当社または正当な権利者に帰属します。</div>
+        <div class="art"><b>第10条（秘密保持）</b>受講者は、本サービスを通じて知り得た当社および他の受講者の情報を、当社の許可なく第三者に開示・漏洩してはなりません。</div>
+        <div class="art"><b>第11条（免責）</b>本サービスは情報提供および学習機会の提供を目的とするものであり、当社は特定の成果・収益・効果を保証するものではありません。受講者が本サービスを利用して行った判断・行為の結果について、当社は責任を負いません。</div>
+        <div class="art"><b>第12条（会員資格の停止・取消）</b>受講者が本規約に違反した場合、当社は事前の通知なく本サービスの提供を停止し、または受講者の資格を取り消すことができます。この場合も受講料の返金は行いません。</div>
+        <div class="art"><b>第13条（反社会的勢力の排除）</b>受講者は、自らが暴力団等の反社会的勢力に該当しないことを表明し、保証します。</div>
+        <div class="art"><b>第14条（個人情報の取扱い）</b>当社は、取得した個人情報を、本サービスの提供・ご連絡・運営の目的の範囲で適切に取り扱います。</div>
+        <div class="art"><b>第15条（規約の変更）</b>当社は、必要と判断した場合、受講者への通知により本規約を変更できるものとします。</div>
+        <div class="art"><b>第16条（準拠法・管轄）</b>本規約は日本法に準拠し、本サービスに関して紛争が生じた場合は、東京地方裁判所を第一審の専属的合意管轄裁判所とします。</div>
+        <div class="company">株式会社Merone｜運営統括責任者 森川公美子｜〒105-0022 東京都港区海岸1-4-22 SNビル<br>詳細は<a id="tokushoLink4" href="#" target="_blank" rel="noopener">特定商取引法に基づく表記</a>をご確認ください。</div>
+      </div>
+      <label class="agree locked" id="agreeWrap"><input type="checkbox" id="agree" disabled><span class="box"></span><span class="t">上記の<b>受講規約</b>および<a id="tokushoLink5" href="#" target="_blank" rel="noopener">特定商取引法に基づく表記</a>に同意します（お申込み後のキャンセル・返金は不可）。</span></label>
+      <a class="ocbtn disabled" id="ocbtn" href="#">「Merone生限定🫶🏻 AI活用らぼ」に参加する</a>
       <p class="rno" id="rno"></p>
     </div>
     <div id="retry" style="display:none">
@@ -244,10 +283,33 @@
   try{
     var pp=$("ppbtn");
     if(CFG.PAYPAL_LINK){ pp.href=CFG.PAYPAL_LINK; } else { pp.classList.add("disabled"); $("ppwarn").style.display="block"; }
-    $("ocbtn").href=CFG.FORM_URL||CFG.OPENCHAT_URL;
+    $("ocbtn").href=CFG.OPENCHAT_URL;
     [ "troubleLink","troubleLink2","troubleLink3" ].forEach(function(id){ var el=$(id); if(el) el.href=CFG.SUPPORT_LINE||CFG.OPENCHAT_URL; });
-    if(CFG.TOKUSHO_URL) $("tokushoLink").href=CFG.TOKUSHO_URL;
+    [ "tokushoLink","tokushoLink4","tokushoLink5" ].forEach(function(id){ var el=$(id); if(el&&CFG.TOKUSHO_URL) el.href=CFG.TOKUSHO_URL; });
   }catch(e){ logErr("init",e.message,""); }
+
+  /* 受講規約：最後までスクロール読了→同意チェック解放→オプチャボタン解放 */
+  var consentSent=false;
+  try{
+    var kbox=$("kiyakuBox"), kread=$("kread"), agreeWrap=$("agreeWrap"), agreeCb=$("agree"), ocbtn=$("ocbtn"), unlocked=false;
+    function unlockKiyaku(){ if(unlocked)return; unlocked=true; agreeCb.disabled=false; agreeWrap.classList.remove("locked");
+      kread.textContent="✓ お読みいただきありがとうございます。下にご同意ください。"; kread.classList.add("done"); }
+    function checkScroll(){ if(kbox.scrollTop + kbox.clientHeight >= kbox.scrollHeight - 8) unlockKiyaku(); }
+    kbox.addEventListener("scroll", checkScroll);
+    // done画面が「表示された後」にだけ判定（非表示時は高さ0で誤解放するため）。規約が短くスクロール不要なら解放
+    window._armKiyaku=function(){ if(kbox.offsetParent!==null && kbox.scrollHeight <= kbox.clientHeight + 8) unlockKiyaku(); };
+    agreeCb.addEventListener("change", function(){ ocbtn.classList.toggle("disabled", !agreeCb.checked); });
+    // オプチャ参加クリック時に「規約同意」を台帳へ記録（監査用・遷移はhrefが担当）
+    ocbtn.addEventListener("click", function(){
+      if(consentSent || !agreeCb.checked) return; consentSent=true;
+      try{
+        var payload={ action:"consent", token:token||"", receiptNo:receiptNo||"", name:($("name").value||"").trim(),
+          lineName:($("lineName").value||"").trim(), method:(payMethod==="bank"?"銀行振込":"PayPal"),
+          amount:(payMethod==="bank"?43500:45900), agree:true };
+        if(CFG.GAS_URL) fetch(CFG.GAS_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
+      }catch(e){ logErr("consent",e.message,""); }
+    });
+  }catch(e){ logErr("kiyaku-init",e.message,""); }
 
   /* 決済タブ */
   var payMethod="paypal";
@@ -310,6 +372,7 @@
   function toDone(flagged){
     try{ $("rno").textContent="受付番号："+receiptNo+(flagged?"（確認中の項目あり）":""); }catch(e){ logErr("done",e.message,""); }
     showPane("done");
+    try{ if(window._armKiyaku) setTimeout(window._armKiyaku, 120); }catch(e){}
   }
 
   $("submit").addEventListener("click",function(){
