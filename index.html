@@ -42,8 +42,8 @@
 
   label.fld{display:block;font-size:.9rem;font-weight:700;margin:14px 0 6px}
   label.fld .req{display:inline-block;font-size:.66rem;font-weight:800;color:#fff;background:var(--pink);padding:1px 7px;border-radius:999px;margin-left:6px;vertical-align:middle}
-  input[type=text]{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;font-family:var(--font);font-size:1rem;color:var(--ink);background:var(--panel)}
-  input[type=text]:focus{outline:none;border-color:var(--accent)}
+  input[type=text],input[type=email]{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;font-family:var(--font);font-size:1rem;color:var(--ink);background:var(--panel)}
+  input[type=text]:focus,input[type=email]:focus{outline:none;border-color:var(--accent)}
   input.invalid{border-color:#D0596A;background:color-mix(in srgb,#D0596A 6%,var(--panel))}
 
   .drop{border:2px dashed var(--line-strong);border-radius:14px;background:var(--panel);padding:22px 16px;text-align:center;cursor:pointer;transition:border-color .15s}
@@ -175,10 +175,13 @@
 
     <label class="fld">お名前 <span class="req">必須</span></label>
     <input type="text" id="name" placeholder="山田 花子" autocomplete="name">
+    <label class="fld">メールアドレス <span class="req">必須</span></label>
+    <input type="email" id="email" placeholder="example@gmail.com" autocomplete="email" inputmode="email">
+    <p style="font-size:.78rem; color:#8a97a5; margin-top:6px; line-height:1.7;">開講後にお渡しする「あなた専用AIカルテ」の鍵になります。ふだんお使いのアドレスをご入力ください。</p>
     <label class="fld">LINE名</label>
     <input type="text" id="lineName" placeholder="LINEの表示名">
 
-    <p class="req-err" id="err">未入力の項目があります（スクショ・お名前は必須）</p>
+    <p class="req-err" id="err">未入力の項目があります（スクショ・お名前・メールアドレスは必須）</p>
     <button class="submit" id="submit">送信して確認する →</button>
 
     <div class="trouble">💳 決済でエラーが出た方は、<b>AI勉強会のLINE</b>に<br>「どんなエラーが出たか」の詳細をお送りください。<br>確認して個別に対応いたします。<br><a id="troubleLink" href="#" target="_blank" rel="noopener" style="display:inline-block;margin-top:8px">AI勉強会のLINEを開く →</a></div>
@@ -305,7 +308,7 @@
       try{
         var payload={ action:"consent", token:token||"", receiptNo:receiptNo||"", name:($("name").value||"").trim(),
           lineName:($("lineName").value||"").trim(), method:(payMethod==="bank"?"銀行振込":"PayPal"),
-          amount:(payMethod==="bank"?43500:45900), agree:true };
+          amount:(payMethod==="bank"?43500:45900), agree:true, email:($("email").value||"").trim() };
         if(CFG.GAS_URL) fetch(CFG.GAS_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
       }catch(e){ logErr("consent",e.message,""); }
     });
@@ -348,8 +351,9 @@
     }catch(e){ logErr("compress2",e.message,""); ng&&ng(); }
   }
 
-  function clearErr(){ $("err").classList.remove("show"); $("name").classList.remove("invalid"); }
+  function clearErr(){ $("err").classList.remove("show"); $("name").classList.remove("invalid"); $("email").classList.remove("invalid"); }
   $("name").addEventListener("input",clearErr);
+  $("email").addEventListener("input",clearErr);
 
   /* JSONP（GASの状態ポーリング用・CORS回避） */
   function jsonp(url,cb){
@@ -369,23 +373,46 @@
     [ "checking","done","retry","waiting" ].forEach(function(id){ $(id).style.display=(id===which)?"block":"none"; });
     ov.classList.add("show");
   }
+  function hidMail(s){
+    s=s.trim().toLowerCase();
+    var h=5381; for(var i=0;i<s.length;i++){ h=(((h<<5)+h)+s.charCodeAt(i))>>>0; }
+    var h2=2166136261; for(var j=s.length-1;j>=0;j--){ h2=((h2^s.charCodeAt(j))*16777619)>>>0; }
+    return "m"+h.toString(36)+h2.toString(36).slice(0,4);
+  }
+  function syncKarte(flagged){
+    try{
+      var em=($("email").value||"").trim(); if(em.indexOf("@")<1) return;
+      var id=hidMail(em);
+      if(localStorage.getItem("ailab_app_"+id)) return;
+      fetch("https://inrvprlyobghviklulcv.supabase.co/rest/v1/ailab_notes",{method:"POST",
+        headers:{apikey:"sb_publishable_ZrCNcsRHMci-l7Fns8QtIA_X22XZGJp",Authorization:"Bearer sb_publishable_ZrCNcsRHMci-l7Fns8QtIA_X22XZGJp","Content-Type":"application/json"},
+        body:JSON.stringify({member_id:id,member_name:($("name").value||"").trim(),mood:"申込",worry:"",
+          want:"申込サイトで決済確認（受付番号 "+(receiptNo||"")+(flagged?"・要確認":"")+"）"})})
+        .then(function(r){ if(r.ok){ try{localStorage.setItem("ailab_app_"+id,"1");}catch(e){} } })
+        .catch(function(){});
+    }catch(e){}
+  }
   function toDone(flagged){
     try{ $("rno").textContent="受付番号："+receiptNo+(flagged?"（確認中の項目あり）":""); }catch(e){ logErr("done",e.message,""); }
     showPane("done");
+    syncKarte(flagged);
     try{ if(window._armKiyaku) setTimeout(window._armKiyaku, 120); }catch(e){}
   }
 
   $("submit").addEventListener("click",function(){
     var name=$("name").value.trim(), lineName=$("lineName").value.trim();
-    if(!imgData || !name){
+    var email=$("email").value.trim();
+    var emailOk = email.indexOf("@")>0 && email.indexOf(".")>0;
+    if(!imgData || !name || !emailOk){
       $("err").classList.add("show");
       if(!imgData){ drop.scrollIntoView({behavior:"smooth",block:"center"}); }
-      else { $("name").classList.add("invalid"); $("name").scrollIntoView({behavior:"smooth",block:"center"}); }
+      else if(!name){ $("name").classList.add("invalid"); $("name").scrollIntoView({behavior:"smooth",block:"center"}); }
+      else { $("email").classList.add("invalid"); $("email").scrollIntoView({behavior:"smooth",block:"center"}); }
       return;
     }
     token="t"+Date.now()+Math.random().toString(36).slice(2,7);
     receiptNo="M"+(Date.now().toString().slice(-8));
-    var payload={ action:"apply", token:token, receiptNo:receiptNo, name:name, lineName:lineName, uate:"",
+    var payload={ action:"apply", token:token, receiptNo:receiptNo, name:name, lineName:lineName, uate:"", email:email,
                   method:(payMethod==="bank"?"銀行振込":"PayPal"), amount:(payMethod==="bank"?43500:45900), image:imgData };
     showPane("checking");
     if(CFG.GAS_URL){
