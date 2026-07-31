@@ -108,9 +108,9 @@
   .toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%) translateY(20px);opacity:0;background:var(--ink);color:#fff;padding:11px 20px;border-radius:999px;font-size:.86rem;font-weight:700;z-index:200;transition:all .3s;pointer-events:none}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
-
 </head>
 <body>
+
 <div class="hero">
   <div class="wrap">
     <p class="eyebrow">Merone ／ 特別ご案内</p>
@@ -185,8 +185,8 @@
     <div id="done" style="display:none">
       <div class="ok">🎉</div>
       <h2>確認できました！ありがとうございます</h2>
-      <p>下のボタンから、Merone生限定コミュニティにご参加ください☺</p>
-      <a class="ocbtn" id="ocbtn" href="#">「Merone生限定🫶🏻 AI活用らぼ」に参加する</a>
+      <p>続いて、<b>お申込みフォーム</b>のご記入をお願いします。<br>ご記入いただくと、コミュニティにご案内します☺</p>
+      <a class="ocbtn" id="ocbtn" href="#">お申込みフォームのご記入へ →</a>
       <p class="rno" id="rno"></p>
     </div>
     <div id="retry" style="display:none">
@@ -224,6 +224,7 @@
     GAS_URL: "https://script.google.com/macros/s/AKfycbz5DjmMV5JjVTX_aW0Z-lMHmZ6DS0emk-eI4mnyT6TA3qwLjB79kRACxYV0_Zv2fS9-/exec",
     PAYPAL_LINK: "https://no-guard.com/p/r/j6UBJxyQ?openExternalBrowser=1",
     OPENCHAT_URL: "https://line.me/ti/g2/XIZ5Hz2zhc6guBnuFiwCz1mu_oFG0MLPrvvdDg?utm_source=invitation&utm_medium=link_copy&utm_campaign=default",
+    FORM_URL: "https://kumiko0814.github.io/merone-ai-labo/form.html",
     SUPPORT_LINE: "https://fv9f75lk.autosns.app/line?openExternalBrowser=1",  // AI勉強会のLINE（決済エラー連絡先）
     MERONE_ADDR: "〒105-0022 東京都港区海岸1-4-22 SNビル",
     INVOICE_NO: "T2011501024815",
@@ -242,7 +243,7 @@
   try{
     var pp=$("ppbtn");
     if(CFG.PAYPAL_LINK){ pp.href=CFG.PAYPAL_LINK; } else { pp.classList.add("disabled"); $("ppwarn").style.display="block"; }
-    $("ocbtn").href=CFG.OPENCHAT_URL;
+    $("ocbtn").href=CFG.FORM_URL||CFG.OPENCHAT_URL;
     [ "troubleLink","troubleLink2","troubleLink3" ].forEach(function(id){ var el=$(id); if(el) el.href=CFG.SUPPORT_LINE||CFG.OPENCHAT_URL; });
     if(CFG.TOKUSHO_URL) $("tokushoLink").href=CFG.TOKUSHO_URL;
   }catch(e){ logErr("init",e.message,""); }
