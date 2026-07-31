@@ -159,11 +159,8 @@
     <input type="text" id="name" placeholder="山田 花子" autocomplete="name">
     <label class="fld">LINE名</label>
     <input type="text" id="lineName" placeholder="LINEの表示名">
-    <label class="fld">領収書の宛名 <span class="req">必須</span></label>
-    <input type="text" id="uate" placeholder="山田 花子 様／◯◯株式会社 様">
-    <p style="font-size:.8rem;color:var(--muted);margin:6px 0 0">※ 確認後、その場で領収書を発行します（¥45,900・印紙不要）。</p>
 
-    <p class="req-err" id="err">未入力の項目があります（スクショ・お名前・宛名は必須）</p>
+    <p class="req-err" id="err">未入力の項目があります（スクショ・お名前は必須）</p>
     <button class="submit" id="submit">送信して確認する →</button>
 
     <div class="trouble">💳 決済でエラーが出た方は、<b>AI勉強会のLINE</b>に<br>「どんなエラーが出たか」の詳細をお送りください。<br>確認して個別に対応いたします。<br><a id="troubleLink" href="#" target="_blank" rel="noopener" style="display:inline-block;margin-top:8px">AI勉強会のLINEを開く →</a></div>
@@ -190,19 +187,7 @@
       <h2>確認できました！ありがとうございます</h2>
       <p>下のボタンから、Merone生限定コミュニティにご参加ください☺</p>
       <a class="ocbtn" id="ocbtn" href="#">「Merone生限定🫶🏻 AI活用らぼ」に参加する</a>
-      <div><a class="subbtn" id="showRcpt">🧾 領収書を表示・保存</a></div>
       <p class="rno" id="rno"></p>
-      <div class="rcpt" id="rcpt">
-        <h3>領　収　書</h3>
-        <div class="r-to"><span id="rc-to"></span> 様</div>
-        <div class="r-amt">￥45,900－</div>
-        <div class="r-line">但し　Merone AI活用らぼ♡ 参加費として</div>
-        <div class="r-line">上記正に領収いたしました</div>
-        <div class="r-line" id="rc-date"></div>
-        <div class="r-line" id="rc-no"></div>
-        <div class="r-iss"><b>株式会社Merone</b><br><span id="rc-addr">（住所）</span><br><span id="rc-inv"></span></div>
-        <div style="text-align:center;margin-top:14px"><button class="subbtn" onclick="window.print()">🖨 印刷 / PDF保存</button></div>
-      </div>
     </div>
     <div id="retry" style="display:none">
       <div class="ok">🧐</div>
@@ -224,7 +209,7 @@
   <div class="bugcard">
     <h3>🍺 不具合の報告</h3>
     <p>気になったこと・動かないところを書いて送ってね。今の画面の状況も一緒に記録されます。</p>
-    <textarea id="bugtext" placeholder="例：送信ボタンを押しても反応しない／領収書が出ない など"></textarea>
+    <textarea id="bugtext" placeholder="例：送信ボタンを押しても反応しない／画像が送れない など"></textarea>
     <div class="bugrow"><button id="bugcancel">とじる</button><button class="send" id="bugsend">送信する</button></div>
   </div>
 </div>
@@ -260,8 +245,6 @@
     $("ocbtn").href=CFG.OPENCHAT_URL;
     [ "troubleLink","troubleLink2","troubleLink3" ].forEach(function(id){ var el=$(id); if(el) el.href=CFG.SUPPORT_LINE||CFG.OPENCHAT_URL; });
     if(CFG.TOKUSHO_URL) $("tokushoLink").href=CFG.TOKUSHO_URL;
-    $("rc-addr").textContent=CFG.MERONE_ADDR;
-    $("rc-inv").textContent=CFG.INVOICE_NO?("登録番号 "+CFG.INVOICE_NO):"";
   }catch(e){ logErr("init",e.message,""); }
 
   /* 決済タブ */
@@ -301,8 +284,8 @@
     }catch(e){ logErr("compress2",e.message,""); ng&&ng(); }
   }
 
-  function clearErr(){ $("err").classList.remove("show"); [ "name","uate" ].forEach(function(id){ $(id).classList.remove("invalid"); }); }
-  [ "name","uate" ].forEach(function(id){ $(id).addEventListener("input",clearErr); });
+  function clearErr(){ $("err").classList.remove("show"); $("name").classList.remove("invalid"); }
+  $("name").addEventListener("input",clearErr);
 
   /* JSONP（GASの状態ポーリング用・CORS回避） */
   function jsonp(url,cb){
@@ -323,27 +306,21 @@
     ov.classList.add("show");
   }
   function toDone(flagged){
-    try{
-      $("rc-to").textContent=($("uate").value.trim());
-      var d=new Date();
-      $("rc-date").textContent="発行日　"+d.getFullYear()+"年"+(d.getMonth()+1)+"月"+d.getDate()+"日";
-      $("rc-no").textContent="No. "+receiptNo;
-      $("rno").textContent="受付番号："+receiptNo+(flagged?"（確認中の項目あり）":"");
-    }catch(e){ logErr("done",e.message,""); }
+    try{ $("rno").textContent="受付番号："+receiptNo+(flagged?"（確認中の項目あり）":""); }catch(e){ logErr("done",e.message,""); }
     showPane("done");
   }
 
   $("submit").addEventListener("click",function(){
-    var name=$("name").value.trim(), uate=$("uate").value.trim(), lineName=$("lineName").value.trim();
-    if(!imgData || !name || !uate){
+    var name=$("name").value.trim(), lineName=$("lineName").value.trim();
+    if(!imgData || !name){
       $("err").classList.add("show");
       if(!imgData){ drop.scrollIntoView({behavior:"smooth",block:"center"}); }
-      else { var bad=!name?"name":"uate"; $(bad).classList.add("invalid"); $(bad).scrollIntoView({behavior:"smooth",block:"center"}); }
+      else { $("name").classList.add("invalid"); $("name").scrollIntoView({behavior:"smooth",block:"center"}); }
       return;
     }
     token="t"+Date.now()+Math.random().toString(36).slice(2,7);
     receiptNo="M"+(Date.now().toString().slice(-8));
-    var payload={ action:"apply", token:token, receiptNo:receiptNo, name:name, lineName:lineName, uate:uate,
+    var payload={ action:"apply", token:token, receiptNo:receiptNo, name:name, lineName:lineName, uate:"",
                   method:(payMethod==="bank"?"銀行振込":"PayPal"), amount:45900, image:imgData };
     showPane("checking");
     if(CFG.GAS_URL){
@@ -384,11 +361,6 @@
     imgData=null; file.value=""; thumb.style.display="none"; drop.style.display="block";
     drop.scrollIntoView({behavior:"smooth",block:"center"});
   });
-  $("showRcpt").addEventListener("click",function(){
-    var r=$("rcpt"); r.style.display=(r.style.display==="block")?"none":"block";
-    if(r.style.display==="block") r.scrollIntoView({behavior:"smooth",block:"center"});
-  });
-
   /* ============ 🍺 バグ報告 ============ */
   var bugov=$("bugov");
   $("bugbtn").addEventListener("click",function(){ bugov.classList.add("show"); });
