@@ -75,7 +75,7 @@
   .ovcard h2{font-size:1.35rem;font-weight:800;margin:8px 0 6px}
   .ovcard p{color:var(--ink-soft);font-size:.95rem;margin:0 0 6px}
   .ocbtn{display:block;background:#06C755;color:#fff;font-weight:800;font-size:1.08rem;padding:16px;border-radius:14px;text-decoration:none;margin:18px 0 10px;box-shadow:0 8px 22px rgba(6,199,85,.28)}
-  .ocbtn.disabled{background:#C4CBD8;box-shadow:none;pointer-events:none;cursor:not-allowed}
+  .ocbtn.disabled{background:#C4CBD8;box-shadow:none;cursor:not-allowed}
   .ocbtn2{display:block;background:#fff;color:#06C755;border:2px solid #06C755;font-weight:800;font-size:.98rem;padding:13px;border-radius:14px;text-decoration:none;margin:6px 0 4px;}
   .kread{font-size:.8rem;color:var(--accent);font-weight:700;margin:14px 0 8px;text-align:left}
   .kread.done{color:var(--muted)}
@@ -306,9 +306,24 @@
     // done画面が「表示された後」にだけ判定（非表示時は高さ0で誤解放するため）。規約が短くスクロール不要なら解放
     window._armKiyaku=function(){ if(kbox.offsetParent!==null && kbox.scrollHeight <= kbox.clientHeight + 8) unlockKiyaku(); };
     agreeCb.addEventListener("change", function(){ ocbtn.classList.toggle("disabled", !agreeCb.checked); });
+    // 押せない時は「規約をスクロールしてね」を画面で教える（読まずに押す方対策）
+    function hintKiyaku(){
+      kread.textContent="▼ この枠の中を、指でいちばん下までスクロールすると、チェックできます";
+      kread.classList.remove("done");
+      try{ kbox.scrollIntoView({behavior:"smooth", block:"center"}); }catch(e){}
+      kbox.style.outline="3px solid #E8A6B0";
+      setTimeout(function(){ kbox.style.outline=""; }, 1800);
+    }
+    agreeWrap.addEventListener("click", function(){ if(agreeCb.disabled) hintKiyaku(); });
     // オプチャ参加クリック時に「規約同意」を台帳へ記録（監査用・遷移はhrefが担当）
-    ocbtn.addEventListener("click", function(){
-      if(consentSent || !agreeCb.checked) return; consentSent=true;
+    ocbtn.addEventListener("click", function(e){
+      if(!agreeCb.checked){
+        e.preventDefault();
+        if(agreeCb.disabled){ hintKiyaku(); }
+        else{ try{ agreeWrap.scrollIntoView({behavior:"smooth", block:"center"}); }catch(err){} }
+        return;
+      }
+      if(consentSent) return; consentSent=true;
       try{
         var payload={ action:"consent", token:token||"", receiptNo:receiptNo||"", name:($("name").value||"").trim(),
           lineName:($("lineName").value||"").trim(), method:(payMethod==="bank"?"銀行振込":"PayPal"),
